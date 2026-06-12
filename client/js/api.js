@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════
    InsightGrade AI — API Client
 ═══════════════════════════════════════════════════════ */
-const BASE_URL = "https://result-analyzerr.netlify.app/"; // Same origin
+const BASE_URL = "https://result-analysis-kk1w.onrender.com"; // Same origin
 
 const API = {
   _token: () => localStorage.getItem("ig_token"),
