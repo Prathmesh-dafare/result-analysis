@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en" data-theme="dark-neon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports — InsightGrade AI</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="bg-mesh"></div>
+    <div id="toast-container"></div>
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-text">✦ InsightGrade</div>
+        <div class="sidebar-logo-sub">Academic Intelligence</div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-section-label">Overview</div>
+        <a class="nav-item" href="dashboard.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="analytics.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          Analytics & Results
+        </a>
+      </nav>
+      <nav class="nav-section">
+        <div class="nav-section-label">AI Features</div>
+        <a class="nav-item" href="mentor.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+            />
+          </svg>
+          AI Mentor
+        </a>
+        <a class="nav-item active" href="reports.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          Reports & PDF
+        </a>
+      </nav>
+      <nav class="nav-section">
+        <div class="nav-section-label">Account</div>
+        <a class="nav-item" href="profile.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Profile & Settings
+        </a>
+        <button class="nav-item" data-action="logout">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Sign Out
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar"><span data-user-initials></span></div>
+          <div>
+            <div class="user-name" data-user-name></div>
+            <div class="user-role" data-user-role></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <header class="topbar">
+      <div class="topbar-title">Reports & Export</div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="generateFullReport()">
+          ↓ Export PDF Report
+        </button>
+      </div>
+    </header>
+
+    <header class="mobile-header">
+      <div class="mobile-logo">✦ Reports</div>
+      <button class="btn btn-primary btn-sm" onclick="generateFullReport()">
+        ↓ PDF
+      </button>
+    </header>
+
+    <main class="main-content page-enter">
+      <div class="section-title">Academic Reports</div>
+      <div class="section-subtitle">
+        Comprehensive analytics, predictions, and AI insights in one place
+      </div>
+
+      <!-- Report Cards Grid -->
+      <div class="report-grid" id="report-grid">
+        <div class="loading-center" style="grid-column: span 2">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav">
+      <div
+        class="bottom-nav-item"
+        data-page="dashboard"
+        data-href="dashboard.html"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+        Home
+      </div>
+      <div
+        class="bottom-nav-item"
+        data-page="analytics"
+        data-href="analytics.html"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Results
+      </div>
+      <div class="bottom-nav-item" data-page="mentor" data-href="mentor.html">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+        </svg>
+        Mentor
+      </div>
+      <div
+        class="bottom-nav-item active"
+        data-page="reports"
+        data-href="reports.html"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        Reports
+      </div>
+      <div class="bottom-nav-item" data-page="profile" data-href="profile.html">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Profile
+      </div>
+    </nav>
+
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+      let reportData = null;
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        requireAuth();
+        fillUserInfo();
+        initBottomNav("reports");
+        await loadReports();
+      });
+
+      async function loadReports() {
+        try {
+          const [resultsRes, storyRes, resumeRes] = await Promise.allSettled([
+            API.results.my(),
+            API.ai.story(),
+            API.ai.resume(),
+          ]);
+          const results = resultsRes.value?.results || [];
+          const analytics = resultsRes.value?.analytics || null;
+          const story = storyRes.value?.story || null;
+          const achievements = resumeRes.value?.achievements || [];
+          reportData = { results, analytics, story, achievements };
+          renderReports(reportData);
+        } catch (err) {
+          toast(err.message, "error");
+        }
+      }
+
+      function renderReports({ results, analytics, story, achievements }) {
+        const grid = document.getElementById("report-grid");
+        if (!analytics) {
+          grid.innerHTML = `<div class="empty-state" style="grid-column:span 2">
+          <h3>No data yet</h3><p>Upload results first to generate reports.</p>
+        </div>`;
+          return;
+        }
+
+        grid.innerHTML = `
+        <!-- Academic Summary -->
+        <div class="glass chart-card">
+          <div class="chart-header"><div class="chart-title">📊 Academic Summary</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+            ${statBlock("CGPA", analytics.cgpa, cgpaColor(analytics.cgpa))}
+            ${statBlock("Latest SGPA", analytics.latestSGPA, "#63b3ed")}
+            ${statBlock("Health Score", analytics.healthScore + "/100", "#9f7aea")}
+            ${statBlock("Attendance", (analytics.avgAttendance || "N/A") + "%", analytics.avgAttendance >= 75 ? "#68d391" : "#fc8074")}
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <span class="badge badge-${analytics.backlogRisk === "Low" ? "success" : "danger"}">Backlog Risk: ${analytics.backlogRisk}</span>
+            <span class="badge badge-${analytics.distinctionProb === "High" ? "success" : "warning"}">Distinction: ${analytics.distinctionProb}</span>
+            ${analytics.rank ? `<span class="badge badge-info">Rank: ${analytics.rank}</span>` : ""}
+          </div>
+        </div>
+
+        <!-- SGPA Trend Mini Chart -->
+        <div class="glass chart-card">
+          <div class="chart-header"><div class="chart-title">📈 SGPA Trend</div></div>
+          <div class="chart-canvas-wrap" style="height:180px"><canvas id="report-sgpa-chart"></canvas></div>
+        </div>
+
+        <!-- Subject Performance -->
+        <div class="glass chart-card" style="grid-column:span 2">
+          <div class="chart-header">
+            <div class="chart-title">📚 Subject Performance Breakdown</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
+            ${(analytics.subjectAvgs || [])
+              .map(
+                (s) => `
+              <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px">
+                <div style="font-size:0.8rem;font-weight:600;margin-bottom:8px;color:var(--text-secondary)">${s.name}</div>
+                <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:${s.status === "strong" ? "#68d391" : s.status === "average" ? "#fbbf24" : "#fc8074"}">${s.avg}%</div>
+                <span class="badge badge-${s.status === "strong" ? "success" : s.status === "average" ? "warning" : "danger"}" style="margin-top:6px">${s.status}</span>
+              </div>`,
+              )
+              .join("")}
+          </div>
+        </div>
+
+        <!-- AI Story -->
+        ${
+          story
+            ? `
+        <div class="glass chart-card">
+          <div class="chart-header"><div class="chart-title">✦ Academic Story</div><span class="badge badge-info">AI</span></div>
+          <div class="story-text">${story}</div>
+        </div>`
+            : ""
+        }
+
+        <!-- Resume Achievements -->
+        ${
+          achievements.length
+            ? `
+        <div class="glass chart-card">
+          <div class="chart-header">
+            <div class="chart-title">🏆 Resume Achievements</div>
+            <button class="btn btn-ghost btn-sm" onclick="copyAllAchievements()">Copy All</button>
+          </div>
+          <div id="achievement-list">
+            ${achievements
+              .map(
+                (a, i) => `
+              <div class="achievement-item">
+                <div class="achievement-icon">${["🥇", "🥈", "🥉", "🏅", "⭐"][i] || "✦"}</div>
+                <div class="achievement-text">${a}</div>
+              </div>`,
+              )
+              .join("")}
+          </div>
+        </div>`
+            : ""
+        }
+
+        <!-- Semester Table -->
+        <div class="glass chart-card" style="grid-column:span 2">
+          <div class="chart-header"><div class="chart-title">📋 Semester-wise Results</div></div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border);color:var(--text-muted)">
+                  <th style="text-align:left;padding:10px 12px;font-size:0.72rem;text-transform:uppercase">Semester</th>
+                  <th style="text-align:left;padding:10px 12px;font-size:0.72rem;text-transform:uppercase">Year</th>
+                  <th style="text-align:left;padding:10px 12px;font-size:0.72rem;text-transform:uppercase">SGPA</th>
+                  <th style="text-align:left;padding:10px 12px;font-size:0.72rem;text-transform:uppercase">CGPA</th>
+                  <th style="text-align:left;padding:10px 12px;font-size:0.72rem;text-transform:uppercase">Subjects</th>
+                  <th style="text-align:left;padding:10px 12px;font-size:0.72rem;text-transform:uppercase">Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${results
+                  .map(
+                    (r) => `
+                  <tr style="border-bottom:1px solid var(--border);transition:background 0.2s" onmouseover="this.style.background='var(--bg-card)'" onmouseout="this.style.background=''">
+                    <td style="padding:12px;font-weight:600">Sem ${r.semester}</td>
+                    <td style="padding:12px;color:var(--text-secondary)">${r.year}</td>
+                    <td style="padding:12px;font-weight:700;color:${r.sgpa >= 8 ? "#68d391" : r.sgpa >= 6 ? "#63b3ed" : "#fbbf24"}">${r.sgpa}</td>
+                    <td style="padding:12px">${r.cgpa || "—"}</td>
+                    <td style="padding:12px;color:var(--text-secondary)">${r.subjects.length}</td>
+                    <td style="padding:12px"><span class="badge badge-${r.sgpa >= 8 ? "success" : r.sgpa >= 6 ? "info" : "warning"}">${r.sgpa >= 8 ? "Distinction" : r.sgpa >= 6 ? "First Class" : "Second Class"}</span></td>
+                  </tr>`,
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+        // Render mini SGPA chart
+        setTimeout(() => {
+          const canvas = document.getElementById("report-sgpa-chart");
+          if (!canvas || !analytics.sgpas?.length) return;
+          new Chart(canvas, {
+            type: "line",
+            data: {
+              labels: analytics.sgpas.map((s) => `Sem ${s.semester}`),
+              datasets: [
+                {
+                  data: analytics.sgpas.map((s) => s.sgpa),
+                  borderColor: "#63b3ed",
+                  backgroundColor: "rgba(99,179,237,0.08)",
+                  borderWidth: 2,
+                  pointRadius: 4,
+                  tension: 0.4,
+                  fill: true,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                y: {
+                  min: 0,
+                  max: 10,
+                  grid: { color: "rgba(255,255,255,0.05)" },
+                  ticks: { color: "#94a3b8" },
+                },
+                x: { grid: { display: false }, ticks: { color: "#94a3b8" } },
+              },
+            },
+          });
+        }, 100);
+      }
+
+      function statBlock(label, value, color) {
+        return `<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px">
+        <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em">${label}</div>
+        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:${color}">${value}</div>
+      </div>`;
+      }
+
+      function cgpaColor(v) {
+        if (v >= 8.5) return "#68d391";
+        if (v >= 7) return "#63b3ed";
+        if (v >= 5.5) return "#fbbf24";
+        return "#fc8074";
+      }
+
+      function copyAllAchievements() {
+        const items = document.querySelectorAll(".achievement-text");
+        const text = Array.from(items)
+          .map((el) => "• " + el.textContent)
+          .join("\n");
+        navigator.clipboard
+          .writeText(text)
+          .then(() => toast("All achievements copied!", "success"));
+      }
+
+      async function generateFullReport() {
+        if (!reportData?.analytics) {
+          toast("No data to export", "warning");
+          return;
+        }
+        const btn = document.querySelector('[onclick="generateFullReport()"]');
+        setLoading(btn, true, "Generating PDF...");
+        try {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4",
+          });
+          const user = getUser();
+          const a = reportData.analytics;
+          const now = new Date().toLocaleString("en-IN");
+
+          // Header
+          doc.setFillColor(5, 8, 16);
+          doc.rect(0, 0, 210, 40, "F");
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(22);
+          doc.setTextColor(99, 179, 237);
+          doc.text("InsightGrade AI", 20, 18);
+          doc.setFontSize(10);
+          doc.setTextColor(148, 163, 184);
+          doc.text("Academic Performance Report", 20, 26);
+          doc.text(`Generated: ${now}`, 20, 32);
+
+          // Student Info
+          doc.setFillColor(12, 17, 32);
+          doc.rect(0, 42, 210, 24, "F");
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(13);
+          doc.setTextColor(20, 20, 20);
+          doc.text(user?.name || "Student", 20, 52);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9);
+          doc.setTextColor(148, 163, 184);
+          doc.text(
+            `Roll: ${user?.rollNumber || "—"}  |  Dept: ${user?.department || "—"}  |  Sem: ${user?.semester || "—"}`,
+            20,
+            60,
+          );
+
+          // Stats
+          let y = 76;
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(13);
+          doc.setTextColor(99, 179, 237);
+          doc.text("Academic Summary", 20, y);
+          y += 8;
+
+          const stats = [
+            ["CGPA", a.cgpa],
+            ["Latest SGPA", a.latestSGPA],
+            ["Health Score", `${a.healthScore}/100`],
+            ["Attendance", `${a.avgAttendance || "N/A"}%`],
+            ["Distinction Prob", a.distinctionProb],
+            ["Backlog Risk", a.backlogRisk],
+          ];
+          stats.forEach(([label, val], i) => {
+            const x = i % 2 === 0 ? 20 : 115;
+            if (i % 2 === 0) y += 7;
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9);
+            doc.setTextColor(148, 163, 184);
+            doc.text(label + ":", x, y);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(11);
+            doc.setTextColor(20, 20, 20);
+            doc.text(String(val), x + 40, y);
+          });
+
+          y += 14;
+          doc.setDrawColor(30, 40, 70);
+          doc.line(20, y, 190, y);
+          y += 8;
+
+          // Subject Performance
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(13);
+          doc.setTextColor(99, 179, 237);
+          doc.text("Subject Performance", 20, y);
+          y += 8;
+
+          a.subjectAvgs?.forEach((s) => {
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9);
+            doc.setTextColor(148, 163, 184);
+            doc.text(`${s.name}:`, 24, y);
+            const c =
+              s.status === "strong"
+                ? [104, 211, 145]
+                : s.status === "average"
+                  ? [251, 191, 36]
+                  : [252, 129, 74];
+            doc.setTextColor(...c);
+            doc.setFont("helvetica", "bold");
+            doc.text(`${s.avg}% (${s.status})`, 90, y);
+            y += 6;
+            if (y > 270) {
+              doc.addPage();
+              y = 20;
+            }
+          });
+
+          y += 6;
+          doc.setDrawColor(30, 40, 70);
+          doc.line(20, y, 190, y);
+          y += 8;
+
+          // Story
+          if (reportData.story) {
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(13);
+            doc.setTextColor(99, 179, 237);
+            doc.text("Academic Story", 20, y);
+            y += 8;
+            doc.setFont("helvetica", "italic");
+            doc.setFontSize(9);
+            doc.setTextColor(50, 50, 50);
+            const lines = doc.splitTextToSize(reportData.story, 170);
+            doc.text(lines, 20, y);
+            y += lines.length * 5 + 8;
+          }
+
+          // Achievements
+          if (reportData.achievements?.length) {
+            if (y > 230) {
+              doc.addPage();
+              y = 20;
+            }
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(13);
+            doc.setTextColor(99, 179, 237);
+            doc.text("Resume Achievements", 20, y);
+            y += 8;
+            reportData.achievements.forEach((ach) => {
+              doc.setFont("helvetica", "normal");
+              doc.setFontSize(9);
+              doc.setTextColor(20, 20, 20);
+              const lines = doc.splitTextToSize(`• ${ach}`, 165);
+              doc.text(lines, 24, y);
+              y += lines.length * 5 + 2;
+            });
+          }
+
+          // Footer
+          const pages = doc.internal.getNumberOfPages();
+          for (let i = 1; i <= pages; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.setTextColor(70, 80, 100);
+            doc.text("InsightGrade AI — Confidential Academic Report", 20, 290);
+            doc.text(`Page ${i} of ${pages}`, 180, 290, { align: "right" });
+          }
+
+          doc.save(
+            `InsightGrade-Report-${user?.name?.replace(/\s+/g, "-") || "Student"}.pdf`,
+          );
+          toast("PDF exported successfully!", "success");
+        } catch (err) {
+          toast("PDF error: " + err.message, "error");
+        }
+        setLoading(btn, false);
+      }
+
+      window.copyAllAchievements = copyAllAchievements;
+      window.generateFullReport = generateFullReport;
+    </script>
+  </body>
+</html>

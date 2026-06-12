@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en" data-theme="dark-neon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Mentor — InsightGrade AI</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
+  </head>
+  <body>
+    <div class="bg-mesh"></div>
+    <div id="toast-container"></div>
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-text">✦ InsightGrade</div>
+        <div class="sidebar-logo-sub">Academic Intelligence</div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-section-label">Overview</div>
+        <a class="nav-item" href="dashboard.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="analytics.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          Analytics & Results
+        </a>
+      </nav>
+      <nav class="nav-section">
+        <div class="nav-section-label">AI Features</div>
+        <a class="nav-item active" href="mentor.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+            />
+          </svg>
+          AI Mentor
+        </a>
+        <a class="nav-item" href="reports.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          Reports & PDF
+        </a>
+      </nav>
+      <nav class="nav-section">
+        <div class="nav-section-label">Account</div>
+        <a class="nav-item" href="profile.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Profile & Settings
+        </a>
+        <button class="nav-item" data-action="logout">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Sign Out
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar"><span data-user-initials></span></div>
+          <div>
+            <div class="user-name" data-user-name></div>
+            <div class="user-role" data-user-role></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <header class="topbar">
+      <div class="topbar-title">AI Academic Mentor</div>
+      <div class="topbar-actions">
+        <span class="badge badge-success">● Groq Powered</span>
+      </div>
+    </header>
+
+    <header class="mobile-header">
+      <div class="mobile-logo">✦ AI Mentor</div>
+      <span class="badge badge-success">● Live</span>
+    </header>
+
+    <main class="main-content page-enter">
+      <!-- Swipe Tabs -->
+      <div class="swipe-tabs">
+        <div class="swipe-tab active" onclick="showMentorTab('chat', this)">
+          💬 Chat
+        </div>
+        <div class="swipe-tab" onclick="showMentorTab('roadmap', this)">
+          🗺 Study Roadmap
+        </div>
+        <div class="swipe-tab" onclick="showMentorTab('resume', this)">
+          📄 Resume Builder
+        </div>
+      </div>
+
+      <!-- Chat Tab -->
+      <div id="tab-chat">
+        <div class="dash-grid" style="gap: 20px">
+          <!-- Chat Window -->
+          <div
+            class="glass"
+            style="overflow: hidden; display: flex; flex-direction: column"
+          >
+            <div
+              style="
+                padding: 16px 20px;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+              "
+            >
+              <div
+                class="user-avatar"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    var(--accent),
+                    var(--accent-2)
+                  );
+                  font-size: 1rem;
+                  width: 36px;
+                  height: 36px;
+                "
+              >
+                ✦
+              </div>
+              <div>
+                <div style="font-weight: 600; font-size: 0.9rem">
+                  InsightGrade AI Mentor
+                </div>
+                <div style="font-size: 0.72rem; color: #68d391">
+                  ● Online · Personalized for you
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="chat-messages"></div>
+
+            <!-- Quick Prompts -->
+            <div
+              style="padding: 10px 16px; border-top: 1px solid var(--border)"
+            >
+              <div
+                style="
+                  font-size: 0.72rem;
+                  color: var(--text-muted);
+                  margin-bottom: 6px;
+                "
+              >
+                Quick questions
+              </div>
+              <div
+                class="swipe-tabs"
+                id="quick-prompts"
+                style="margin-bottom: 0"
+              ></div>
+            </div>
+
+            <div class="chat-input-row">
+              <textarea
+                class="chat-input"
+                id="chat-input"
+                rows="1"
+                placeholder="Ask anything about your academic performance…"
+              ></textarea>
+              <button
+                class="btn btn-primary"
+                id="send-btn"
+                style="padding: 10px 18px; align-self: flex-end"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Info Panel -->
+          <div style="display: flex; flex-direction: column; gap: 16px">
+            <div class="ai-box">
+              <div class="ai-box-header">
+                <span class="badge badge-info ai-badge">✦ ABOUT</span>
+              </div>
+              <div class="ai-text">
+                Your AI Mentor has access to your
+                <strong>complete academic history</strong> — marks, CGPA,
+                attendance, subject performance, and trends. Ask anything
+                specific!
+              </div>
+            </div>
+
+            <div class="glass chart-card">
+              <div class="chart-title" style="margin-bottom: 14px">
+                💡 Try Asking
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <div
+                  class="roadmap-item"
+                  onclick="sendQuick('What is my weakest subject and why?')"
+                  style="
+                    cursor: pointer;
+                    padding: 10px 12px;
+                    background: var(--bg-card);
+                    border-radius: var(--radius-sm);
+                  "
+                >
+                  What is my weakest subject?
+                </div>
+                <div
+                  class="roadmap-item"
+                  onclick="sendQuick('How can I improve my CGPA to 9?')"
+                  style="
+                    cursor: pointer;
+                    padding: 10px 12px;
+                    background: var(--bg-card);
+                    border-radius: var(--radius-sm);
+                  "
+                >
+                  How to reach 9 CGPA?
+                </div>
+                <div
+                  class="roadmap-item"
+                  onclick="sendQuick('Am I at risk of getting a backlog?')"
+                  style="
+                    cursor: pointer;
+                    padding: 10px 12px;
+                    background: var(--bg-card);
+                    border-radius: var(--radius-sm);
+                  "
+                >
+                  Am I at backlog risk?
+                </div>
+                <div
+                  class="roadmap-item"
+                  onclick="sendQuick('Give me a study plan for this week')"
+                  style="
+                    cursor: pointer;
+                    padding: 10px 12px;
+                    background: var(--bg-card);
+                    border-radius: var(--radius-sm);
+                  "
+                >
+                  Give me a weekly study plan
+                </div>
+                <div
+                  class="roadmap-item"
+                  onclick="sendQuick('Which semester was my best and why?')"
+                  style="
+                    cursor: pointer;
+                    padding: 10px 12px;
+                    background: var(--bg-card);
+                    border-radius: var(--radius-sm);
+                  "
+                >
+                  Which was my best semester?
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roadmap Tab -->
+      <div id="tab-roadmap" class="hidden">
+        <div class="flex-between" style="margin-bottom: 20px">
+          <div>
+            <div class="section-title">AI Study Roadmap</div>
+            <div class="section-subtitle">
+              Personalized daily, weekly & monthly plan based on your
+              performance
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="loadRoadmap()">
+            ↻ Regenerate
+          </button>
+        </div>
+        <div id="roadmap-content">
+          <div class="loading-center"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Resume Tab -->
+      <div id="tab-resume" class="hidden">
+        <div class="flex-between" style="margin-bottom: 20px">
+          <div>
+            <div class="section-title">Resume Achievements</div>
+            <div class="section-subtitle">
+              AI-generated bullet points to add to your resume or LinkedIn
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="loadResume()">
+            ↻ Regenerate
+          </button>
+        </div>
+        <div id="resume-content">
+          <div class="loading-center"><div class="spinner"></div></div>
+        </div>
+        <div class="ai-box" style="margin-top: 20px">
+          <div class="ai-box-header">
+            <span class="badge badge-info ai-badge">✦ TIP</span>
+          </div>
+          <div class="ai-text">
+            Click <strong>Copy</strong> next to any achievement to copy it to
+            clipboard. Paste directly into your resume, LinkedIn, or job
+            application.
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav">
+      <div
+        class="bottom-nav-item"
+        data-page="dashboard"
+        data-href="dashboard.html"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+        Home
+      </div>
+      <div
+        class="bottom-nav-item"
+        data-page="analytics"
+        data-href="analytics.html"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Results
+      </div>
+      <div
+        class="bottom-nav-item active"
+        data-page="mentor"
+        data-href="mentor.html"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+        </svg>
+        Mentor
+      </div>
+      <div class="bottom-nav-item" data-page="reports" data-href="reports.html">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        Reports
+      </div>
+      <div class="bottom-nav-item" data-page="profile" data-href="profile.html">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Profile
+      </div>
+    </nav>
+
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/mentor.js"></script>
+    <script>
+      function showMentorTab(name, el) {
+        ["chat", "roadmap", "resume"].forEach((t) =>
+          document.getElementById("tab-" + t).classList.add("hidden"),
+        );
+        document.getElementById("tab-" + name).classList.remove("hidden");
+        document
+          .querySelectorAll(".swipe-tab")
+          .forEach((t) => t.classList.remove("active"));
+        el.classList.add("active");
+      }
+    </script>
+  </body>
+</html>

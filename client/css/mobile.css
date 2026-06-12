@@ -1,0 +1,153 @@
+/* ═══════════════════════════════════════════════════════
+   InsightGrade AI — Mobile Responsive
+═══════════════════════════════════════════════════════ */
+
+/* ── Bottom Nav (Mobile) ─────────────────────────────── */
+.bottom-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(5,8,16,0.92); backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border);
+  padding: 8px 4px 12px;
+  grid-template-columns: repeat(5, 1fr);
+}
+.bottom-nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 6px; border-radius: var(--radius-sm);
+  font-size: 0.62rem; color: var(--text-muted); transition: var(--transition);
+  cursor: pointer; position: relative;
+}
+.bottom-nav-item.active { color: var(--accent); }
+.bottom-nav-item.active svg { filter: drop-shadow(0 0 6px var(--accent)); }
+.bottom-nav-item svg { transition: transform 0.2s; }
+.bottom-nav-item:active svg { transform: scale(0.85); }
+.bottom-nav-item .nav-pip {
+  position: absolute; top: 2px; right: 12px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-2); display: none;
+}
+.bottom-nav-item.has-badge .nav-pip { display: block; }
+
+/* ── Mobile Header ───────────────────────────────────── */
+.mobile-header {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(5,8,16,0.92); backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  align-items: center; justify-content: space-between;
+}
+.mobile-logo {
+  font-family: var(--font-display); font-size: 1.1rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* ── Swipe Container ─────────────────────────────────── */
+.swipe-tabs {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+  scrollbar-width: none; -ms-overflow-style: none;
+  margin-bottom: 20px;
+}
+.swipe-tabs::-webkit-scrollbar { display: none; }
+.swipe-tab {
+  flex-shrink: 0; padding: 7px 16px; border-radius: 100px;
+  font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+  background: var(--bg-card); border: 1px solid var(--border);
+  cursor: pointer; transition: var(--transition); white-space: nowrap;
+}
+.swipe-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+/* ── Breakpoints ─────────────────────────────────────── */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .dash-grid { grid-template-columns: 1fr; }
+  .dash-grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .roadmap-grid { grid-template-columns: 1fr; }
+  .report-grid { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  /* Hide desktop sidebar & topbar */
+  .sidebar, .topbar { display: none; }
+
+  /* Show mobile nav + header */
+  .bottom-nav   { display: grid; }
+  .mobile-header{ display: flex; }
+
+  /* Remove sidebar margin */
+  .main-content { margin-left: 0; padding: 80px 16px 100px; }
+
+  /* Compact grids */
+  .kpi-grid     { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .dash-grid, .dash-grid-3, .roadmap-grid, .report-grid {
+    grid-template-columns: 1fr; gap: 14px;
+  }
+  .theme-grid   { grid-template-columns: repeat(5, 1fr); }
+
+  /* Galaxy canvas */
+  #galaxy-canvas { height: 300px; }
+
+  /* Chat */
+  .chat-wrap { height: 400px; }
+
+  /* Profile */
+  .profile-hero { padding: 32px 20px; }
+  .profile-name { font-size: 1.4rem; }
+
+  /* KPI values */
+  .kpi-value { font-size: 1.9rem; }
+
+  /* Modal full screen */
+  .modal { max-width: 100%; max-height: 85vh; padding: 24px 20px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+  .modal-overlay { align-items: flex-end; padding: 0; }
+
+  /* Auth pages */
+  .auth-card { margin: 0 12px; padding: 28px 20px; }
+  .auth-logo  { font-size: 1.5rem; }
+
+  /* Section titles */
+  .section-title { font-size: 1.2rem; }
+
+  /* Toast */
+  #toast-container { bottom: 90px; right: 12px; left: 12px; }
+  .toast { min-width: unset; width: 100%; }
+
+  /* Scrollable chart */
+  .chart-canvas-wrap { height: 180px; }
+
+  /* Heatmap scroll */
+  .heatmap-grid { overflow-x: auto; padding-bottom: 8px; }
+}
+
+/* Small phones */
+@media (max-width: 375px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .kpi-value { font-size: 1.6rem; }
+  .main-content { padding: 76px 12px 96px; }
+}
+
+/* Safe area for notched phones */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .bottom-nav { padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+}
+
+/* ── Touch Feedback ──────────────────────────────────── */
+@media (hover: none) {
+  .btn:active       { transform: scale(0.96); }
+  .kpi-card:active  { transform: scale(0.98); }
+  .glass:active     { background: var(--bg-card-hover); }
+  .nav-item:active  { background: var(--bg-card-hover); }
+}
+
+/* ── Pull-to-refresh indicator ───────────────────────── */
+.pull-refresh {
+  display: none; position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 100px; padding: 8px 20px; font-size: 0.8rem; z-index: 300;
+  align-items: center; gap: 8px; color: var(--text-secondary);
+}
+.pull-refresh.visible { display: flex; animation: pageIn 0.2s ease; }

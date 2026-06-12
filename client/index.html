@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en" data-theme="dark-neon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InsightGrade AI — Academic Intelligence Platform</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
+    <style>
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px 24px;
+        position: relative;
+      }
+      .hero-logo {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 6vw, 4rem);
+        font-weight: 800;
+        background: linear-gradient(
+          135deg,
+          var(--accent),
+          var(--accent-2),
+          var(--accent-3)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 12px;
+        line-height: 1.1;
+      }
+      .hero-sub {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        color: var(--text-secondary);
+        max-width: 560px;
+        margin: 0 auto 40px;
+        line-height: 1.7;
+      }
+      .hero-cta {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 60px;
+      }
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        max-width: 900px;
+        margin: 0 auto 60px;
+      }
+      .feature-card {
+        padding: 24px;
+        text-align: left;
+      }
+      .feature-icon {
+        font-size: 1.8rem;
+        margin-bottom: 12px;
+      }
+      .feature-title {
+        font-family: var(--font-display);
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .feature-desc {
+        font-size: 0.83rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+      .badge-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 48px;
+      }
+      .floating-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.1;
+        pointer-events: none;
+        animation: meshFloat 10s ease-in-out infinite alternate;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-mesh"></div>
+    <div
+      class="floating-orb"
+      style="
+        width: 600px;
+        height: 600px;
+        background: var(--accent);
+        top: -200px;
+        left: -150px;
+      "
+    ></div>
+    <div
+      class="floating-orb"
+      style="
+        width: 500px;
+        height: 500px;
+        background: var(--accent-2);
+        bottom: -100px;
+        right: -150px;
+        animation-delay: -5s;
+      "
+    ></div>
+    <div id="toast-container"></div>
+
+    <div class="hero">
+      <div class="badge-row">
+        <span class="badge badge-success">✦ AI Powered</span>
+        <span class="badge badge-info">Gemini Integration</span>
+        <span class="badge badge-warning">Free & Open Source</span>
+      </div>
+
+      <div class="hero-logo">InsightGrade AI</div>
+      <div
+        style="
+          font-family: var(--font-display);
+          font-size: clamp(1rem, 2.5vw, 1.4rem);
+          color: var(--text-secondary);
+          margin-bottom: 16px;
+          font-weight: 600;
+        "
+      >
+        Smart Result Analysis & Performance Intelligence
+      </div>
+      <div class="hero-sub">
+        The academic analytics platform that helps students understand their
+        performance, predict outcomes, and get AI-powered personalized guidance.
+      </div>
+
+      <div class="hero-cta">
+        <a href="register.html" class="btn btn-primary btn-lg">
+          Get Started Free →
+        </a>
+        <a href="login.html" class="btn btn-ghost btn-lg"> Sign In </a>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card glass">
+          <div class="feature-icon">🪐</div>
+          <div class="feature-title">Performance Galaxy</div>
+          <div class="feature-desc">
+            Interactive 3D visualization where each subject is a planet. Size
+            and color reflect your performance. Drag to explore.
+          </div>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon">✦</div>
+          <div class="feature-title">AI Academic Mentor</div>
+          <div class="feature-desc">
+            Chat with Gemini AI that knows your complete academic history. Get
+            personalized answers and actionable advice.
+          </div>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon">📈</div>
+          <div class="feature-title">Smart Predictions</div>
+          <div class="feature-desc">
+            Predict your next SGPA, distinction probability, and backlog risk
+            using ML-powered trend analysis.
+          </div>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon">📄</div>
+          <div class="feature-title">Resume Builder</div>
+          <div class="feature-desc">
+            AI converts your academic achievements into professional resume
+            bullet points. One click to copy.
+          </div>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Analytics Dashboard</div>
+          <div class="feature-desc">
+            Beautiful charts, heatmaps, timelines, and KPI cards showing every
+            dimension of your academic journey.
+          </div>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon">🗺</div>
+          <div class="feature-title">Study Roadmap</div>
+          <div class="feature-desc">
+            AI generates a personalized daily, weekly, and monthly study plan
+            based on your weak subjects and trends.
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-muted)">
+        Built with Node.js · MongoDB · Gemini AI · Chart.js · No React, no
+        Bootstrap
+      </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+      // Redirect logged-in users to dashboard
+      document.addEventListener("DOMContentLoaded", () => {
+        if (getToken()) window.location.href = "dashboard.html";
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en" data-theme="dark-neon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analytics — InsightGrade AI</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
+  </head>
+  <body>
+    <div class="bg-mesh"></div>
+    <div id="toast-container"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-text">✦ InsightGrade</div>
+        <div class="sidebar-logo-sub">Academic Intelligence</div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-section-label">Overview</div>
+        <a class="nav-item" href="dashboard.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item active" href="analytics.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          Analytics & Results
+        </a>
+      </nav>
+      <nav class="nav-section">
+        <div class="nav-section-label">AI Features</div>
+        <a class="nav-item" href="mentor.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+            />
+          </svg>
+          AI Mentor
+        </a>
+        <a class="nav-item" href="reports.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          Reports & PDF
+        </a>
+      </nav>
+      <nav class="nav-section">
+        <div class="nav-section-label">Account</div>
+        <a class="nav-item" href="profile.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Profile & Settings
+        </a>
+        <button class="nav-item" data-action="logout">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Sign Out
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar"><span data-user-initials></span></div>
+          <div>
+            <div class="user-name" data-user-name></div>
+            <div class="user-role" data-user-role></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-title">Analytics & Results</div>
+      <div class="topbar-actions">
+        <button
+          class="btn btn-primary btn-sm"
+          onclick="document.getElementById('add-modal').classList.add('open')"
+        >
+          + Add Results
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <div class="mobile-logo">✦ InsightGrade</div>
+      <button
+        class="btn btn-primary btn-sm"
+        onclick="document.getElementById('add-modal').classList.add('open')"
+      >
+        + Add
+      </button>
+    </header>
+
+    <main class="main-content page-enter">
+      <!-- Swipe Tabs (mobile) -->
+      <div class="swipe-tabs">
+        <div class="swipe-tab active" onclick="showTab('results', this)">
+          My Results
+        </div>
+        <div class="swipe-tab" onclick="showTab('upload', this)">
+          Upload File
+        </div>
+        <div class="swipe-tab" onclick="showTab('predictions', this)">
+          Predictions
+        </div>
+        <div
+          class="swipe-tab"
+          onclick="showTab('search', this)"
+          id="search-tab-btn"
+        >
+          Search
+        </div>
+      </div>
+
+      <!-- Results Tab -->
+      <div id="tab-results">
+        <div class="section-title">My Results</div>
+        <div class="section-subtitle">
+          All uploaded semester results with AI insights
+        </div>
+        <div id="results-list">
+          <div class="loading-center"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Upload Tab -->
+      <div id="tab-upload" class="hidden">
+        <div class="section-title">Upload Results</div>
+        <div class="section-subtitle">
+          CSV or Excel — one row per student, columns: rollNumber, semester,
+          year, sub_SubjectName, cred_SubjectName
+        </div>
+
+        <div class="glass" style="padding: 24px; margin-bottom: 24px">
+          <div
+            id="drop-zone"
+            style="
+              border: 2px dashed var(--border);
+              border-radius: var(--radius-lg);
+              cursor: pointer;
+              transition: var(--transition);
+            "
+            class="drag-target"
+          >
+            <div style="text-align: center; padding: 40px 20px">
+              <svg
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                style="margin: 0 auto 14px; color: var(--text-muted)"
+              >
+                <path
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                />
+              </svg>
+              <p style="color: var(--text-secondary); font-size: 0.92rem">
+                Drop CSV or Excel here, or
+                <span style="color: var(--accent); cursor: pointer"
+                  >browse files</span
+                >
+              </p>
+              <p
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text-muted);
+                  margin-top: 8px;
+                "
+              >
+                Supported: .csv, .xlsx, .xls · Max 5MB
+              </p>
+            </div>
+            <input
+              type="file"
+              id="file-input"
+              accept=".csv,.xlsx,.xls"
+              style="display: none"
+            />
+          </div>
+
+          <div style="margin-top: 20px">
+            <div
+              class="chart-title"
+              style="margin-bottom: 12px; font-size: 0.88rem"
+            >
+              CSV Template Format
+            </div>
+            <div
+              style="
+                background: var(--bg-primary);
+                border-radius: var(--radius-sm);
+                padding: 14px;
+                font-family: monospace;
+                font-size: 0.75rem;
+                color: var(--accent);
+                overflow-x: auto;
+                white-space: nowrap;
+              "
+            >
+              rollNumber,semester,year,sub_Mathematics,cred_Mathematics,sub_Physics,cred_Physics<br />
+              21CS001,3,2024,78,4,65,3<br />
+              21CS002,3,2024,85,4,72,3
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Predictions Tab -->
+      <div id="tab-predictions" class="hidden">
+        <div class="section-title">Performance Predictions</div>
+        <div class="section-subtitle">
+          AI-powered forecasts based on your academic trends
+        </div>
+        <div id="predictions">
+          <div class="loading-center"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Search Tab (teacher/admin) -->
+      <div id="tab-search" class="hidden" id="search-section">
+        <div class="section-title">Search Students</div>
+        <div class="section-subtitle">
+          Find results by student name, roll number, or subject
+        </div>
+        <div class="search-wrap">
+          <svg
+            class="search-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            type="text"
+            class="search-input"
+            id="search-input"
+            placeholder="Search by name, roll number or subject…"
+          />
+        </div>
+        <div id="search-results"></div>
+      </div>
+    </main>
+
+    <!-- Add Results Modal -->
+    <div class="modal-overlay" id="add-modal">
+      <div class="modal glass">
+        <div class="modal-header">
+          <div class="modal-title">Add Semester Results</div>
+          <button
+            class="modal-close btn btn-ghost btn-icon"
+            onclick="
+              document.getElementById('add-modal').classList.remove('open')
+            "
+          >
+            ✕
+          </button>
+        </div>
+
+        <form id="manual-form">
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 14px;
+              margin-bottom: 18px;
+            "
+          >
+            <div class="form-group" style="margin: 0">
+              <label class="form-label">Semester</label>
+              <select
+                class="form-input"
+                id="semester-input"
+                name="semester"
+                required
+              >
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin: 0">
+              <label class="form-label">Year</label>
+              <input
+                class="form-input"
+                type="number"
+                id="year-input"
+                name="year"
+                value="2024"
+                min="2000"
+                max="2030"
+                required
+              />
+            </div>
+          </div>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 14px;
+              margin-bottom: 18px;
+            "
+          >
+            <div class="form-group" style="margin: 0">
+              <label class="form-label">Your Rank</label>
+              <input
+                class="form-input"
+                type="number"
+                id="rank-input"
+                placeholder="e.g. 5"
+                min="1"
+              />
+            </div>
+            <div class="form-group" style="margin: 0">
+              <label class="form-label">Total Students</label>
+              <input
+                class="form-input"
+                type="number"
+                id="total-input"
+                placeholder="e.g. 60"
+                min="1"
+              />
+            </div>
+          </div>
+
+          <div class="flex-between" style="margin-bottom: 12px">
+            <div class="form-label" style="margin: 0">Subjects</div>
+            <button type="button" class="btn btn-ghost btn-sm" id="add-subject">
+              + Add Row
+            </button>
+          </div>
+
+          <div style="overflow-x: auto">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+                gap: 6px;
+                margin-bottom: 6px;
+                font-size: 0.68rem;
+                color: var(--text-muted);
+                padding: 0 2px;
+                min-width: 480px;
+              "
+            >
+              <span>Subject Name</span><span>Marks</span><span>Max</span
+              ><span>Credits</span><span>Attend%</span><span></span>
+            </div>
+            <div id="subjects-container" style="min-width: 480px"></div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 20px">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              style="flex: 1; justify-content: center"
+            >
+              Save Results
+            </button>
+            <button
+              type="button"
+              class="btn btn-ghost"
+              onclick="
+                document.getElementById('add-modal').classList.remove('open')
+              "
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav">
+      <div
+        class="bottom-nav-item"
+        data-page="dashboard"
+        data-href="dashboard.html"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+        Home
+      </div>
+      <div
+        class="bottom-nav-item active"
+        data-page="analytics"
+        data-href="analytics.html"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Results
+      </div>
+      <div class="bottom-nav-item" data-page="mentor" data-href="mentor.html">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+        </svg>
+        Mentor
+      </div>
+      <div class="bottom-nav-item" data-page="reports" data-href="reports.html">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        Reports
+      </div>
+      <div class="bottom-nav-item" data-page="profile" data-href="profile.html">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Profile
+      </div>
+    </nav>
+
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/analytics.js"></script>
+    <script>
+      function showTab(name, el) {
+        ["results", "upload", "predictions", "search"].forEach((t) => {
+          document.getElementById("tab-" + t).classList.add("hidden");
+        });
+        document.getElementById("tab-" + name).classList.remove("hidden");
+        document
+          .querySelectorAll(".swipe-tab")
+          .forEach((t) => t.classList.remove("active"));
+        el.classList.add("active");
+      }
+      // Hide search tab for students
+      document.addEventListener("DOMContentLoaded", () => {
+        const u = getUser();
+        if (u?.role === "student")
+          document.getElementById("search-tab-btn").style.display = "none";
+      });
+    </script>
+  </body>
+</html>

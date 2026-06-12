@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en" data-theme="dark-neon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register — InsightGrade AI</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
+    <style>
+      .auth-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .auth-card {
+        width: 100%;
+        max-width: 500px;
+        padding: 40px;
+        animation: pageIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .auth-logo {
+        font-family: var(--font-display);
+        font-size: 1.9rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 6px;
+      }
+      .auth-tagline {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 32px;
+      }
+      .auth-heading {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .auth-subheading {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        margin-bottom: 28px;
+      }
+      .role-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .role-btn {
+        padding: 12px 8px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border);
+        background: var(--bg-card);
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .role-btn.active {
+        border-color: var(--accent);
+        background: rgba(99, 179, 237, 0.1);
+        color: var(--accent);
+      }
+      .role-btn .role-icon {
+        font-size: 1.4rem;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .pw-strength-bar-wrap {
+        height: 3px;
+        background: var(--bg-card);
+        border-radius: 2px;
+        margin-top: 6px;
+        overflow: hidden;
+      }
+      .pw-strength-bar {
+        height: 100%;
+        width: 0;
+        border-radius: 2px;
+        transition:
+          width 0.4s,
+          background 0.4s;
+      }
+      .pw-toggle {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 4px;
+      }
+      .pw-wrap {
+        position: relative;
+      }
+      .pw-wrap .form-input {
+        padding-right: 44px;
+      }
+      .auth-link {
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-top: 20px;
+      }
+      .auth-link a {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .bg-orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.07;
+        pointer-events: none;
+      }
+      @media (max-width: 480px) {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-mesh"></div>
+    <div
+      class="bg-orb"
+      style="
+        width: 500px;
+        height: 500px;
+        background: var(--accent-2);
+        top: -150px;
+        left: -100px;
+      "
+    ></div>
+    <div
+      class="bg-orb"
+      style="
+        width: 400px;
+        height: 400px;
+        background: var(--accent);
+        bottom: -100px;
+        right: -100px;
+      "
+    ></div>
+    <div id="toast-container"></div>
+
+    <div class="auth-page">
+      <div class="auth-card glass">
+        <div class="auth-logo">✦ InsightGrade</div>
+        <div class="auth-tagline">Academic Intelligence Platform</div>
+        <div class="auth-heading">Create your account</div>
+        <div class="auth-subheading">
+          Join thousands of students tracking their academic journey
+        </div>
+
+        <form id="register-form" autocomplete="off">
+          <!-- Role Selector -->
+          <div style="margin-bottom: 20px">
+            <div class="form-label" style="margin-bottom: 10px">
+              Student Registration
+            </div>
+
+            <div class="role-grid">
+              <label class="role-btn active">
+                <span class="role-icon">🎓</span>
+                Student
+                <input
+                  type="radio"
+                  name="role"
+                  value="student"
+                  checked
+                  style="display: none"
+                />
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input
+              class="form-input"
+              type="text"
+              name="name"
+              placeholder="Arjun Sharma"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input
+              class="form-input"
+              type="email"
+              name="email"
+              placeholder="arjun@college.edu"
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" id="roll-group">
+              <label class="form-label">Roll Number</label>
+              <input
+                class="form-input"
+                type="text"
+                name="rollNumber"
+                placeholder="21CS001"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Department</label>
+              <input
+                class="form-input"
+                type="text"
+                name="department"
+                placeholder="Computer Science"
+              />
+            </div>
+          </div>
+
+          <div class="form-group" id="sem-group">
+            <label class="form-label">Current Semester</label>
+            <select class="form-input" name="semester">
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+              <option value="3">Semester 3</option>
+              <option value="4" selected>Semester 4</option>
+              <option value="5">Semester 5</option>
+              <option value="6">Semester 6</option>
+              <option value="7">Semester 7</option>
+              <option value="8">Semester 8</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="pw-wrap">
+              <input
+                class="form-input"
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Min. 6 characters"
+                required
+              />
+              <button type="button" class="pw-toggle" data-toggle-pw="password">
+                <svg
+                  data-eye
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg
+                  data-eye-off
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  style="display: none"
+                >
+                  <path
+                    d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"
+                  />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              </button>
+            </div>
+            <div class="pw-strength-bar-wrap">
+              <div class="pw-strength-bar" id="pw-strength-bar"></div>
+            </div>
+            <div
+              style="font-size: 0.72rem; margin-top: 4px"
+              id="pw-strength-label"
+            ></div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary w-full btn-lg"
+            style="justify-content: center; margin-top: 4px"
+          >
+            Create Account
+          </button>
+        </form>
+
+        <div class="auth-link">
+          Already have an account? <a href="login.html">Sign in</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script></script>
+  </body>
+</html>
